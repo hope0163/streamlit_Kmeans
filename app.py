@@ -59,33 +59,34 @@ def main():
         
         X = df[selected_columns]
         
-        st.dataframe(X)
+        if len(selected_columns) != 0:
+            st.dataframe(X)
         
-        if len(selected_columns) >= 2 :
-            
-            X_new = pd.DataFrame()  # 빈 데이터프레임 만들기 
-            
-            print(X_new)
-            
-            # 4. 해당 컬럼의 데이터가 문자열이면, 숫자로 바꿔주자.
-            
-            for column in X.columns :
-                print( X[column].dtype ) 
+            if len(selected_columns) >= 2 :
                 
-                # 컬럼의 데이터가 문자열이면, 레이블인코딩 또는 원핫인코딩 해야 한다
-                if X[column].dtype == object :
+                X_new = pd.DataFrame()  # 빈 데이터프레임 만들기 
+                
+                print(X_new)
+                
+                # 4. 해당 컬럼의 데이터가 문자열이면, 숫자로 바꿔주자.
+                
+                for column in X.columns :
+                    print( X[column].dtype ) 
                     
-                    if X[column].nunique() >= 3 :          
-                        column_names = sorted( X[column].unique() )   #원핫 인코딩
-                        X_new[column_names] = pd.get_dummies( X[column].to_frame() )  #비어있는 데이터프레임에 컬럼 추가
-                    
-                    else :
-                        encoder = LabelEncoder() #레이블 인코딩
-                        X_new[column] = encoder.fit_transform( X[column] )                    
-                    
-                else :  
-                    X_new[column] = X[column] #숫자데이터처리
-            
+                    # 컬럼의 데이터가 문자열이면, 레이블인코딩 또는 원핫인코딩 해야 한다
+                    if X[column].dtype == object :
+                        
+                        if X[column].nunique() >= 3 :          
+                            column_names = sorted( X[column].unique() )   #원핫 인코딩
+                            X_new[column_names] = pd.get_dummies( X[column].to_frame() )  #비어있는 데이터프레임에 컬럼 추가
+                        
+                        else :
+                            encoder = LabelEncoder() #레이블 인코딩
+                            X_new[column] = encoder.fit_transform( X[column] )                    
+                        
+                    else :  
+                        X_new[column] = X[column] #숫자데이터처리
+                
             
             # 4-1 인덱스값을 다시 초기화시켜준다
            
